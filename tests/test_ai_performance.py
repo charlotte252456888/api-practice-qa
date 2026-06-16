@@ -247,3 +247,21 @@ def test_error_handling_fallback(
     _record_successful_ai_response(ai_report_recorder, case_id, prompt, response)
 
     assert response.text
+# 4. 模擬協作新增的測試案例 4：驗證 PM 知識
+def test_project_management_definition(groq_client):
+    prompt = "請用一句話解釋什麼是專案管理 (Project Management)？"
+    
+    import time
+    start_time = time.time()
+    completion = groq_client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[{"role": "user", "content": prompt}],
+        timeout=10.0
+    )
+    latency = time.time() - start_time
+    reply_text = completion.choices[0].message.content
+
+    print(f"\n[TC-004] 延遲時間: {latency:.3f} 秒")
+    
+    assert latency < 5.0, f"超時！耗時 {latency:.2f} 秒"
+    assert "管理" in reply_text, "回答中應包含關鍵字『管理』"
