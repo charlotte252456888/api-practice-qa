@@ -1,5 +1,6 @@
 groq
 google-genai
 httpx
+openpyxl
 python-dotenv
 pytest
